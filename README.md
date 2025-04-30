@@ -113,7 +113,7 @@ Incluye pruebas unitarias de servicios usando **Mockito**
   http://localhost:8080/swagger-ui/index.html
 
 - **Documentación OpenAPI en JSON:**  
-  http://localhost:8080/v3/api-docs
+  [postman_collection.json](https://github.com/VazquezAriel/ejercicio-practico-springboot/blob/main/postman_collection.json)
 
 ---
 

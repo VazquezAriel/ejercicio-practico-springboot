@@ -8,7 +8,6 @@ import com.minegocio.alquimiasoft.dto.CustomerResponseDto;
 
 import java.util.List;
 
-
 public interface CustomerService {
 
     List<CustomerResponseDto> searchCustomers(String identification, String name);

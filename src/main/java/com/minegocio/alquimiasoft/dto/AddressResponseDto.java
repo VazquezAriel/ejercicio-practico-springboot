@@ -10,6 +10,7 @@ public class AddressResponseDto {
     private Long id;
     private String city;
     private String state;
+    private String description;
     private boolean main;
 
 }

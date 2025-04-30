@@ -1,13 +1,5 @@
 package com.minegocio.alquimiasoft.service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.minegocio.alquimiasoft.dto.AddressResponseDto;
 import com.minegocio.alquimiasoft.dto.CreateAdditionalAddressRequestDto;
 import com.minegocio.alquimiasoft.dto.CreateCustomerRequestDto;
@@ -20,6 +12,13 @@ import com.minegocio.alquimiasoft.model.Address;
 import com.minegocio.alquimiasoft.model.Customer;
 import com.minegocio.alquimiasoft.repository.AddressRepository;
 import com.minegocio.alquimiasoft.repository.CustomerRepository;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
