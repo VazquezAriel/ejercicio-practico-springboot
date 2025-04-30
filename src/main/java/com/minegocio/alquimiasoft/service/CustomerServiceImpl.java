@@ -41,9 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
                 Optional.ofNullable(name).orElse("todos")
             )
             .stream()
-            .map(customer -> {
-                log.info(customer.toString());
-                return customerMapper.toCustomerResponseDto(customer);})
+            .map(customer -> customerMapper.toCustomerResponseDto(customer))
             .toList();
     }
 
