@@ -31,6 +31,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final AddressRepository addressRepository;
+    private final CustomerMapper customerMapper;
+    private final AddressMapper addressMapper;
 
     @Override
     public List<CustomerResponseDto> searchCustomers(String identification, String name) {
@@ -41,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
             .stream()
             .map(customer -> {
                 log.info(customer.toString());
-                return CustomerMapper.mapper.toCustomerResponseDto(customer);})
+                return customerMapper.toCustomerResponseDto(customer);})
             .toList();
     }
 
@@ -51,12 +53,12 @@ public class CustomerServiceImpl implements CustomerService {
         if(customerRepository.existsByIdentificationNumber(request.getIdentificationNumber()))
             throw new CustomerValidationException("El número de identificación '" + request.getIdentificationNumber() +"' ya está registrado.");
             
-        Customer newCustomer = CustomerMapper.mapper.toCustomer(request);
-        Address mainAddress = AddressMapper.mapper.toAddress(request.getMainAddress(), newCustomer);
+        Customer newCustomer = customerMapper.toCustomer(request);
+        Address mainAddress = addressMapper.toAddress(request.getMainAddress(), newCustomer);
 
         newCustomer.setAddresses(Collections.singletonList(mainAddress));
 
-        return CustomerMapper.mapper.toCustomerResponseDto(
+        return customerMapper.toCustomerResponseDto(
             customerRepository.save(newCustomer)
         );
     }
@@ -66,9 +68,9 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository
             .findById(request.getId())
             .map(customer -> {
-                CustomerMapper.mapper.updateCustomerFromDto(request, customer);
+                customerMapper.updateCustomerFromDto(request, customer);
                 Customer updated = customerRepository.save(customer);
-                return CustomerMapper.mapper.toCustomerResponseDto(updated);
+                return customerMapper.toCustomerResponseDto(updated);
             })
             .orElseThrow(() -> new CustomerValidationException("Cliente no encontrado con id: " + request.getId()));
     }
@@ -87,10 +89,10 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository
             .findById(request.getCustomerId())
             .map(customer -> {
-                Address newAddress = AddressMapper.mapper.toAddress(request, customer);
+                Address newAddress = addressMapper.toAddress(request, customer);
                 customer.getAddresses().add(newAddress);
                 Address savedAddress = addressRepository.save(newAddress);
-                return AddressMapper.mapper.toAddressResponseDto(savedAddress);
+                return addressMapper.toAddressResponseDto(savedAddress);
             })
             .orElseThrow(() -> new CustomerValidationException("Cliente no encontrado con id: " + request.getCustomerId()));
     }
@@ -100,7 +102,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(customerId)
             .map(customer -> {
                 return customer.getAddresses().stream()
-                    .map(AddressMapper.mapper::toAddressResponseDto)
+                    .map(addressMapper::toAddressResponseDto)
                     .collect(Collectors.toList());
             })
             .orElseThrow(() -> new CustomerValidationException("Cliente no encontrado con id: " + customerId));
@@ -115,7 +117,7 @@ public class CustomerServiceImpl implements CustomerService {
                     .peek(address -> address.setMain(address.getId().equals(addressId)))
                     .anyMatch(address -> address.getId().equals(addressId));
                 if (found) 
-                    return CustomerMapper.mapper.toCustomerResponseDto(customerRepository.save(customer));
+                    return customerMapper.toCustomerResponseDto(customerRepository.save(customer));
                 throw new CustomerValidationException("Dirección no encontrada con id: " + addressId);
             })
             .orElseThrow(() -> new CustomerValidationException("Cliente no encontrado con id: " + customerId));

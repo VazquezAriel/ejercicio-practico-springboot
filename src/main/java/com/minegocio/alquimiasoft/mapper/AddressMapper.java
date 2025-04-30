@@ -9,11 +9,9 @@ import com.minegocio.alquimiasoft.model.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AddressMapper {
 
-    AddressMapper mapper = org.mapstruct.factory.Mappers.getMapper(AddressMapper.class);
-    
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "main", constant = "true")
     @Mapping(target = "customer", source = "customer")
